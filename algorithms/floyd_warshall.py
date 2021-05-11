@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def floyd_warshall_algo(n, adj_matrix):  # all pairs shortest path
     adj_matrix_temp = adj_matrix.copy()
     for i in range(n):

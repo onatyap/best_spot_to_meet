@@ -1,6 +1,7 @@
 import unittest
 from tests import read_input
 
+
 class UtilsTests(unittest.TestCase):
     reason = False
 
