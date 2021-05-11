@@ -1,6 +1,6 @@
 import sys
 from algorithms.floyd_warshall import *
-from utils import *
+from utils.ds_utils import adj_list_to_matrix
 from utils.file_utils import read_input
 
 

@@ -1,12 +1,5 @@
 import unittest
-import os
-from utils.file_utils import read_input as ri
-from utils import adj_list_to_matrix
-
-
-def read_input(example):
-    return ri(os.path.join('../examples', example))
-
+from tests import read_input
 
 class UtilsTests(unittest.TestCase):
     reason = False
