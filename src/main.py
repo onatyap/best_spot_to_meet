@@ -1,6 +1,6 @@
 import numpy as np
 import sys
-import os
+
 
 def floyd_warshall_algo(n, adj_matrix):  # all pairs shortest path
     adj_matrix_temp = adj_matrix.copy()
@@ -26,32 +26,18 @@ def adj_list_to_matrix(adj_list):
 def read_input(f_name):
     with open(f_name) as data:
         n, q = [int(x) for x in data.readline().split()]
-        adj_list = [int(x)-1 for x in data.readline().split()]
-        nearest_nodes = [[int(x)-1 for x in data.readline().split()] for _ in range(q)]
+        adj_list = [int(x) - 1 for x in data.readline().split()]
+        nearest_nodes = [[int(x) - 1 for x in data.readline().split()] for _ in range(q)]
     return n, q, adj_list, nearest_nodes
 
 
 def find_min_via_floyd_warshall(cost_matrix, friend_locations):
-    class GlobalMin:  # [max_pair_distance, total_distance, vertex, cost_list]
-        def __init__(self, max_pair_distance, total_distance, vertex, cost_list):
-            self.max_pair_distance = max_pair_distance
-            self.total_distance = total_distance
-            self.vertex = vertex
-            self.cost_list = cost_list
+    relevant_costs = cost_matrix[friend_locations, :]
+    max_dists = np.min(np.max(relevant_costs, axis=0))
+    min_max_dist = relevant_costs + 1e5*(np.max(relevant_costs, axis=0) != max_dists)
 
-    global_min = GlobalMin(1e5, 1e5, -1, [])
-    temp_cost_list = cost_matrix[friend_locations, :]
-    for i in range(len(temp_cost_list)):
-        temp_max_pair_distance = max(temp_cost_list[0][i], temp_cost_list[1][i], temp_cost_list[2][i])
-        if temp_max_pair_distance <= global_min.max_pair_distance:
-            temp_total_distance = temp_cost_list[0][i] + temp_cost_list[1][i] + temp_cost_list[2][i]
-            if temp_total_distance < global_min.total_distance:
-                global_min.total_distance = temp_total_distance
-                global_min.max_pair_distance = temp_max_pair_distance
-                global_min.vertex = i + 1
-                global_min.cost_list = temp_cost_list[:, i]
-
-    return global_min.vertex, global_min.cost_list
+    best_node = np.argmin(np.sum(min_max_dist, axis=0))
+    return best_node, cost_matrix[best_node, friend_locations]
 
 
 def main(argv):
@@ -63,7 +49,7 @@ def main(argv):
 
     for i in range(q):
         vertex, cost_list = find_min_via_floyd_warshall(cost_matrix, friend_locations[i])
-        print(vertex, " ".join([str(int(x)) for x in cost_list]))
+        print(vertex+1, " ".join([str(int(x)) for x in cost_list]))
 
 
 if __name__ == "__main__":
