@@ -17,6 +17,9 @@ def main(argv):
         else:
             print("Please specify a correct algorithm")
             sys.exit(1)
+    else:
+        print("Too many parameters, please only specify an input file and a correct algorithm!")
+        sys.exit(1)
 
     for vertex, distances in optimal_solution.run():
         print(vertex, distances[0], distances[1], distances[2])
