@@ -10,9 +10,9 @@ class UtilsTests(unittest.TestCase):
 
         self.assertEqual(3, n)
         self.assertEqual(2, q)
-        self.assertListEqual([0, 0], adj_list)
-        self.assertListEqual([0, 1, 2], friend_locations[0])
-        self.assertListEqual([1, 2, 2], friend_locations[1])
+        self.assertListEqual([1, 1], adj_list)
+        self.assertListEqual([1, 2, 3], friend_locations[0])
+        self.assertListEqual([2, 3, 3], friend_locations[1])
 
 
 if __name__ == '__main__':

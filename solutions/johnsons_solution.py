@@ -34,7 +34,6 @@ class JohnsonsSolution(BestSpotToMeetAbstractSolution):
 
             self.graph.cost_container.append(distance)
 
-
     def solve(self, day):
         class GlobalMin:  # [max_pair_distance, total_distance, vertex, cost_list]
             def __init__(self):
@@ -44,7 +43,7 @@ class JohnsonsSolution(BestSpotToMeetAbstractSolution):
                 self.cost_list = []
 
         global_min = GlobalMin()
-        temp_cost_list = [self.graph.cost_container[index-1] for index in self.friend_locations[day]]
+        temp_cost_list = [self.graph.cost_container[index - 1] for index in self.friend_locations[day]]
         for i, _ in enumerate(temp_cost_list):
             temp_max_pair_distance = max(temp_cost_list[0][i], temp_cost_list[1][i], temp_cost_list[2][i])
             if temp_max_pair_distance <= global_min.max_pair_distance:
