@@ -2,22 +2,34 @@ import sys
 from algorithms.floyd_warshall import *
 from utils.ds_utils import adj_list_to_matrix
 from utils.file_utils import read_input
+from solutions.floyd_warshall_solution import FloydWarshallSolution as FloydWarshall
+from utils.problem_constraint_utils import solution_list
 
 
 def main(argv):
-    n, q, adj_list, friend_locations = read_input(argv)
+    n, q, adj_list, friend_locations = read_input(argv[0])
     # print(n, q, adj_list, friend_locations)
-    adj_matrix = adj_list_to_matrix(adj_list)
-    cost_matrix = floyd_warshall_algo(n, adj_matrix)
-    # print(cost_matrix)
 
-    for i in range(q):
-        vertex, cost_list = find_min_via_floyd_warshall(cost_matrix, friend_locations[i])
-        print(vertex, " ".join([str(int(x)) for x in cost_list]))
+    if len(argv) == 1:  # if solution type was not specified, solve with optimal
+        optimal_solution = FloydWarshall(n, q, adj_list, friend_locations)
+    elif len(argv) == 2:  # if solution was specified, solve with that
+        solution_input = argv[1]
+        if solution_input in solution_list:
+            optimal_solution = eval(solution_input+'(n, q, adj_list, friend_locations)')
+        else:
+            print("Please specify a correct algorithm")
+            sys.exit(1)
+
+    for vertex, distances in optimal_solution.run():
+        print(vertex, distances[0], distances[1], distances[2])
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:  # no arguments supplied
-        print("Please provide an input file")
-
-    main(sys.argv[1])  # python main.py examples/example1.txt
+        print("Please specify an input file")
+        sys.exit(1)
+    elif len(sys.argv) > 3:
+        print("Too many parameters, please only specify an input file and a correct algorithm!")
+        sys.exit(1)
+    # print(' '.join(sys.argv))
+    main(sys.argv[1:])  # python main.py examples/example1.txt FloydWarshall
