@@ -10,12 +10,12 @@ def read_input(f_name):
         sys.exit()
 
     n, q = [int(x) for x in input_file.readline().split()]
-    adj_list = [int(x) - 1 for x in input_file.readline().split()]
-    nearest_nodes = [[int(x) - 1 for x in input_file.readline().split()] for _ in range(q)]
+    node_connection_list = [int(x) for x in input_file.readline().split()]
+    nearest_nodes = [[int(x) for x in input_file.readline().split()] for _ in range(q)]
 
     try:
         input_file.close()
     except OSError:
         pass
 
-    return n, q, adj_list, nearest_nodes
+    return n, q, node_connection_list, nearest_nodes

@@ -4,8 +4,13 @@ from utils.problem_constraint_utils import CONSTRAINT_MAX
 
 class FloydWarshallSolution(BestSpotToMeetAbstractSolution):
 
+    def __init__(self, n, q, node_connection_list, friend_locations):
+        super().__init__(n, q, [x - 1 for x in node_connection_list],
+                         [[x - 1 for x in friend_location] for friend_location in
+                          friend_locations])
+
     def graph_construction(self):
-        self.graph.adj_list_to_matrix(self.adj_list)
+        self.graph.node_connection_list_to_adj_matrix(self.node_connection_list)
 
     def cost_calculation(self):
         cost_matrix = self.graph.container.copy()

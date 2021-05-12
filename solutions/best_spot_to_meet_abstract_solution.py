@@ -2,11 +2,11 @@ from data_structures.graph import Graph
 
 
 class BestSpotToMeetAbstractSolution:
-    def __init__(self, n, q, adj_list, friend_locations):   # input parameters and initialization
+    def __init__(self, n: int, q: int, node_connection_list: list, friend_locations: list):  # input parameters and initialization
 
         self.n = n
         self.q = q
-        self.adj_list = adj_list
+        self.node_connection_list = node_connection_list
         self.friend_locations = friend_locations
 
         self.graph = Graph()

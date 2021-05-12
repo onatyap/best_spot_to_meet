@@ -4,6 +4,10 @@ from tests import read_input
 
 class FloydWarshallTests(unittest.TestCase):
 
+    @staticmethod
+    def createFloydWarshall(n, q, adj_list, friend_locations):
+        return FloydWarshall(n, q, adj_list, friend_locations)
+
     def test_floyd_warshall_example1(self):
         test_true = ['1 0 1 1',
                      '1 1 1 1']
