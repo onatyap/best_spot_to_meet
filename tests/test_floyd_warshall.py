@@ -1,17 +1,5 @@
 import unittest
 from tests import read_input
-from utils.ds_utils import adj_list_to_matrix
-from algorithms.floyd_warshall import floyd_warshall_algo, find_min_via_floyd_warshall
-
-
-def prep(example):
-    n, q, adj_list, friend_locations = read_input(example)
-    adj_matrix = adj_list_to_matrix(adj_list)
-    cost_matrix = floyd_warshall_algo(n, adj_matrix)
-
-    for i in range(q):
-        vertex, cost_list = find_min_via_floyd_warshall(cost_matrix, friend_locations[i])
-        yield str(vertex) + ' ' + ' '.join([str(int(x)) for x in cost_list])
 
 
 class FloydWarshallTests(unittest.TestCase):
