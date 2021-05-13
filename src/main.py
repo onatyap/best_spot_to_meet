@@ -2,6 +2,8 @@ import sys
 from utils.file_utils import read_input
 from solutions.floyd_warshall_solution import FloydWarshallSolution as FloydWarshall
 from solutions.johnsons_solution import JohnsonsSolution as Johnsons
+from solutions.dijkstra_solution import DijkstraSolution as Dijkstra
+from solutions.breadth_first_search_solution import BFSSolution as BreadFirstSearch
 from utils.problem_constraint_utils import solution_list
 
 

@@ -1,5 +1,6 @@
 from .best_spot_to_meet_abstract_solution import BestSpotToMeetAbstractSolution
 from utils.problem_constraint_utils import CONSTRAINT_MAX
+from utils.debug_utils import debug_cost_matrix
 
 
 class FloydWarshallSolution(BestSpotToMeetAbstractSolution):
@@ -31,9 +32,16 @@ class FloydWarshallSolution(BestSpotToMeetAbstractSolution):
 
         global_min = GlobalMin()
         temp_cost_list = [self.graph.cost_container[index] for index in self.friend_locations[day]]
-        for i in range(len(temp_cost_list)):
+        debug_cost_matrix(temp_cost_list, day)
+        for i in range(len(temp_cost_list[0])):
             temp_max_pair_distance = max(temp_cost_list[0][i], temp_cost_list[1][i], temp_cost_list[2][i])
-            if temp_max_pair_distance <= global_min.max_pair_distance:
+            if temp_max_pair_distance < global_min.max_pair_distance:
+                temp_total_distance = temp_cost_list[0][i] + temp_cost_list[1][i] + temp_cost_list[2][i]
+                global_min.total_distance = temp_total_distance
+                global_min.max_pair_distance = temp_max_pair_distance
+                global_min.vertex = i + 1
+                global_min.cost_list = [row[i] for row in temp_cost_list]
+            elif temp_max_pair_distance == global_min.max_pair_distance:
                 temp_total_distance = temp_cost_list[0][i] + temp_cost_list[1][i] + temp_cost_list[2][i]
                 if temp_total_distance < global_min.total_distance:
                     global_min.total_distance = temp_total_distance

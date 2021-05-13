@@ -6,7 +6,7 @@ class Queue:
         self.size = 0
 
     def push(self, element):
-        self.container[self.size] = element
+        self.container.append(element)
         self.size += 1
 
     def pop(self):
@@ -14,7 +14,7 @@ class Queue:
             return
 
         self.size -= 1
-        self.container.pop(self.size)
+        return self.container.pop(self.size)
 
     def top(self):
         return self.container[self.size - 1]
