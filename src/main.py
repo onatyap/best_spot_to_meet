@@ -9,7 +9,7 @@ from utils.problem_constraint_utils import solution_list
 
 def main(argv):
     n, q, node_connection_list, friend_locations = read_input(argv[0])
-
+    print(n, q, node_connection_list, friend_locations)
     if len(argv) == 1:  # if solution type was not specified, solve with optimal
         optimal_solution = FloydWarshall(n, q, node_connection_list, friend_locations)
     elif len(argv) == 2:  # if solution was specified, solve with that
