@@ -9,7 +9,7 @@ class BFSSolution(BestSpotToMeetAbstractSolution):
     def graph_construction(self):
         self.graph.node_connection_list_to_adj_list(self.node_connection_list)
 
-    def cost_calculation_for_day(self, day):
+    def cost_calculation_for_day(self, day):  # O(V + E)
         friend_location = self.friend_locations[day]
         for source in friend_location:
             visited = set()
@@ -18,7 +18,7 @@ class BFSSolution(BestSpotToMeetAbstractSolution):
             queue.push(source)
             distance = [CONSTRAINT_MAX] * self.n
             distance[source - 1] = 0
-            while not queue.is_empty():
+            while not queue.is_empty():  # O(V + E)
                 visited_node = queue.pop()
                 for neighbor in self.graph.container[visited_node]:
                     if neighbor not in visited:
@@ -56,9 +56,9 @@ class BFSSolution(BestSpotToMeetAbstractSolution):
 
         return global_min.vertex, global_min.cost_list
 
-    def run(self):
+    def run(self):  # O(q * (V + E)) ~ O(qV)
         self.graph_construction()
-        for day in range(self.q):
-            self.cost_calculation_for_day(day)
-            yield self.solve(day)
+        for day in range(self.q):  # O(q)
+            self.cost_calculation_for_day(day)  # O(V + E)
+            yield self.solve(day)  # O(V)
             self.graph.cost_container.clear()
