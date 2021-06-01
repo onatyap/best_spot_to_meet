@@ -13,10 +13,15 @@ to use a dynamic programming algorithm called Floyd Warshall. There are O(V^3) s
 
 ## Johnson's Algorithm
 
+Similar to our first approach, the second approach also calculates the shortest paths for all pairs. However, this time
+it performs Dijkstra's algorithm from each node to every other node. As we're using an array based priority queue in
+this approach, the algorithm runs in O(n^3). If the algorithm was implemented by using a min-heap, it would've taken
+O(n^2*log(n)) time.
 
+## Dijkstra's Algorithm from Friend Locations
 
-## Dijkstra's Algorithm
-
-
+After observing Johnson's algorithm's performance, we decided to reduce the number of visited nodes by starting the
+search from only the nodes that each friend is located. By this improvement, the algorithm works in O(q*n^2). 
+If the algorithm was implemented by using a min-heap, it would've taken O(q*n*log(n)) time.
 
 ## Breadth First Search Algorithm
