@@ -9,7 +9,7 @@ class BestSpotToMeetAbstractSolution:
         self.node_connection_list = node_connection_list
         self.friend_locations = friend_locations
 
-        self.graph = Graph()
+        self.graph = Graph(n)
 
     def graph_construction(self):  # adj_list -> graph construction
         pass

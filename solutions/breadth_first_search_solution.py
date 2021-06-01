@@ -4,7 +4,7 @@ from data_structures.queue import Queue
 from utils.debug_utils import debug_cost_matrix
 
 
-class BFSSolution(BestSpotToMeetAbstractSolution):
+class BreadthFirstSearchSolution(BestSpotToMeetAbstractSolution):
 
     def graph_construction(self):
         self.graph.node_connection_list_to_adj_list(self.node_connection_list)

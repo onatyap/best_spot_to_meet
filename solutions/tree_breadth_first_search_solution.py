@@ -1,104 +1,147 @@
 from .best_spot_to_meet_abstract_solution import BestSpotToMeetAbstractSolution
 from utils.problem_constraint_utils import CONSTRAINT_MAX
 from data_structures.queue import Queue
+from data_structures.treegraph import TreeGraph
+import math
 
 
-class TreeBFSSolution(BestSpotToMeetAbstractSolution):
+class TreeBreadthFirstSearchSolution(BestSpotToMeetAbstractSolution):
 
-    def graph_construction(self):
+    def __init__(self, n: int, q: int, node_connection_list: list, friend_locations: list):
+        super().__init__(n, q, node_connection_list, friend_locations)
         self.graph.node_connection_list_to_adj_list(self.node_connection_list)
+        root = self.graph.find_root()
+        self.tree = TreeGraph(root, self.node_connection_list, n)
 
     def solve(self, day):
         friend_location = self.friend_locations[day]
 
         friend_a_location, friend_b_location, friend_c_location = friend_location
 
-        class Friend:
-            def __init__(self, location, n):
-                self.location = location
-                self.visited_set = set()
+        friend_pairs = [[friend_a_location, friend_b_location], [friend_b_location, friend_c_location],
+                        [friend_c_location, friend_a_location]]
 
-                self.queue = Queue()
-                self.queue.push(location)
+        distance = []
+        path = [[]] * 3
 
-                self.distance = [CONSTRAINT_MAX] * n
-                self.distance[location - 1] = 0
+        for index, (friend_source, friend_destination) in enumerate(friend_pairs):
+            temp_distance = [CONSTRAINT_MAX] * self.n
+            temp_distance[friend_source - 1] = 0
+            path[index] = []
 
-        friend_a = Friend(friend_a_location, self.n)
-        friend_b = Friend(friend_b_location, self.n)
-        friend_c = Friend(friend_c_location, self.n)
+            source_subtree_index = self.tree.node_container[friend_source - 1].subtree_index
+            destination_subtree_index = self.tree.node_container[friend_destination - 1].subtree_index
 
-        friends = [friend_a, friend_b, friend_c]
+            temp_node = self.tree.node_container[friend_source - 1]
+            intersection_subtree_index = []
+            for a, b in zip(source_subtree_index, destination_subtree_index):
+                if a == b:
+                    intersection_subtree_index.append(a)
+                else:
+                    break
 
-        visited_count = [0] * self.n
-        solution_nodes = []
+            while temp_node.subtree_index != intersection_subtree_index:
+                path[index].append(temp_node)
+                temp_distance[temp_node.parent.vertex - 1] = temp_distance[temp_node.vertex - 1] + 1
+                temp_node = temp_node.parent
 
-        class GlobalMin:
-            def __init__(self):
-                self.total_distance = CONSTRAINT_MAX
-                self.vertex = -1
+            for child in destination_subtree_index[len(intersection_subtree_index):]:
+                #print(temp_node, child, destination_subtree_index)
+                temp_distance[temp_node.children[child].vertex - 1] = temp_distance[temp_node.vertex - 1] + 1
+                path[index].append(temp_node)
+                temp_node = temp_node.children[child]
+            path[index].append(temp_node)
+            distance.append(temp_distance)
 
-        while any([not friend.queue.is_empty() for friend in friends]):
-            for friend in friends:
-                if friend.queue.is_empty():
-                    continue
-                visited_nodes = []
-                while not friend.queue.is_empty():
-                    visited_node = friend.queue.pop()
-                    visited_nodes.append(visited_node)
-                    friend.visited_set.add(visited_node)
-                    visited_count[visited_node - 1] += 1
-                    if visited_count[visited_node - 1] == len(friends):
-                        solution_nodes.append(visited_node)
-                for visited_node in visited_nodes:
-                    for neighbor in self.graph.container[visited_node]:
-                        if neighbor not in friend.visited_set:
-                            friend.queue.push(neighbor)
-                            friend.distance[neighbor - 1] = min(friend.distance[visited_node - 1] + 1,
-                                                                friend.distance[neighbor - 1])
+            #print("Path from", friend_source, "to", friend_destination, "=", [n.vertex for n in path[index]])
+            #print("Distance from", friend_source, "to", friend_destination, "=", temp_distance)
+            # print("Distance from", friend_source, "to", friend_destination, "=", [a for a in distance[index] if a != CONSTRAINT_MAX])
 
-            if len(solution_nodes) > 0:
-                global_min = GlobalMin()
-                for solution_node in solution_nodes:
-                    temp_distance = sum(friend.distance[solution_node - 1] for friend in friends)
-                    if temp_distance < global_min.total_distance:
-                        global_min.total_distance = temp_distance
-                        global_min.vertex = solution_node
+        if all([len(x) == 1 for x in path]):
+            return path[0][0].vertex, (0, 0, 0)
 
-                return global_min.vertex, [friend.distance[global_min.vertex - 1] for friend in friends]
+        max_path_length = -CONSTRAINT_MAX
+        max_path_index = -1
+        for index, _path in enumerate(path):
+            path_length = len(_path)
+            if max_path_length < path_length:
+                max_path_length = path_length
+                max_path_index = index
 
-        # visited_set_map = {x: {x} for x in friend_location}
-        # friend_queue_map = {x: Queue() for x in friend_location}
-        # distance_map = {x: [CONSTRAINT_MAX] * self.n for x in friend_location}
-        # visited_count = [0] * self.n
-        # for source in friend_location:  # initialization
-        #     friend_queue_map.get(source).push(source)
-        #     distance_map.get(source)[source - 1] = 0
+        friend_pair_index = [[0, 1], [1, 2], [2, 0]]
 
-        # while not (friend_queue_map.get(friend_location[0]).is_empty() and friend_queue_map.get(friend_location[1]).is_empty() and friend_queue_map.get(friend_location[2]).is_empty()):
+        if max_path_length % 2 == 0:  # if path length is even, two possible centers
+            center_a = path[max_path_index][int(max_path_length / 2)]
+            center_b = path[max_path_index][int(max_path_length / 2) - 1]
 
-        # while any([not queue.is_empty() for queue in friend_queue_map.values()]):
-        #     for source in friend_location:
-        #         if friend_queue_map.get(source).is_empty():
-        #             continue
-        #         visited_nodes = []
-        #         while not friend_queue_map.get(source).is_empty():
-        #             visited_node = friend_queue_map.get(source).pop()
-        #             visited_nodes.append(visited_node)
-        #             visited_set_map.get(source).add(visited_node)
-        #             visited_count[visited_node - 1] += 1
-        #             if visited_count[visited_node - 1] == len(friend_queue_map.keys()):
-        #                 return visited_node, [distance_map.get(friend)[visited_node - 1] for friend in friend_location]
-        #         for visited_node in visited_nodes:
-        #             for neighbor in self.graph.container[visited_node]:
-        #                 if neighbor not in visited_set_map.get(source):
-        #                     friend_queue_map.get(source).push(neighbor)
-        #                     distance_map.get(source)[neighbor - 1] = min(distance_map.get(source)[visited_node - 1] + 1,
-        #                                                                  distance_map.get(source)[neighbor - 1])
+            distance_to_center_a = [0] * 3
+            distance_to_center_a[max_path_index] = distance[max_path_index][center_a.vertex - 1]
+            remaining_index = [0, 1, 2]
+            remaining_index.remove(max_path_index)
+            for index in remaining_index:  # in the remaining indices
+                if center_a in path[index]:  # if the center is visited in the path
+                    distance_to_center_a[index] = distance[index][center_a.vertex - 1]
+                else:  # if not visited, run guided bfs
+                    # if the current remaining index corresponds to the destination vertex in max path
+                    if friend_pair_index[max_path_index][1] == index:
+                        distance_to_center_a[index] = max_path_length - distance[max_path_index][center_a.vertex - 1] - 1
 
-        return "Not possible", (0, 0, 0)
+                    # if the current remaining index corresponds to the destination vertex in the path
+                    # whose source is the destination vertex in the max path
+                    elif friend_pair_index[friend_pair_index[max_path_index][1]][1] == index:
+                        distance_to_center_a[index] = len(path[friend_pair_index[max_path_index][1]]) - \
+                                                    distance[friend_pair_index[max_path_index][1]][center_a.vertex - 1] - 1
 
-    def run(self):  # O(q * (V + E)) ~ O(qV)
-        self.graph_construction()
+            distance_to_center_b = [0] * 3
+            distance_to_center_b[max_path_index] = distance[max_path_index][center_b.vertex - 1]
+            remaining_index = [0, 1, 2]
+            remaining_index.remove(max_path_index)
+            for index in remaining_index:  # in the remaining indices
+                if center_b in path[index]:  # if the center is visited in the path
+                    distance_to_center_b[index] = distance[index][center_b.vertex - 1]
+                else:  # if not visited, run guided bfs
+                    # if the current remaining index corresponds to the destination vertex in max path
+                    if friend_pair_index[max_path_index][1] == index:
+                        distance_to_center_b[index] = max_path_length - distance[max_path_index][center_b.vertex - 1] - 1
+
+                    # if the current remaining index corresponds to the destination vertex in the path
+                    # whose source is the destination vertex in the max path
+                    elif friend_pair_index[friend_pair_index[max_path_index][1]][1] == index:
+                        distance_to_center_b[index] = len(path[friend_pair_index[max_path_index][1]]) - \
+                                                      distance[friend_pair_index[max_path_index][1]][center_b.vertex - 1] - 1
+            min_a = min(distance_to_center_a)
+            min_b = min(distance_to_center_b)
+            if min_a < min_b:
+                return center_a.vertex, distance_to_center_a
+            elif min_a == min_b:
+                if sum(distance_to_center_a) < sum(distance_to_center_b):
+                    return center_a.vertex, distance_to_center_a
+                else:
+                    return center_b.vertex, distance_to_center_b
+            else:
+                return center_b.vertex, distance_to_center_b
+
+        else:
+            distance_to_center = [0] * 3
+            center = path[max_path_index][math.ceil(max_path_length / 2) - 1]
+            distance_to_center[max_path_index] = distance[max_path_index][center.vertex - 1]
+            remaining_index = [0, 1, 2]
+            remaining_index.remove(max_path_index)
+            for index in remaining_index:  # in the remaining indices
+                if center in path[index]:  # if the center is visited in the path
+                    distance_to_center[index] = distance[index][center.vertex - 1]
+                else:  # if not visited, run guided bfs
+                    # if the current remaining index corresponds to the destination vertex in max path
+                    if friend_pair_index[max_path_index][1] == index:
+                        distance_to_center[index] = max_path_length - distance[max_path_index][center.vertex - 1] - 1
+
+                    # if the current remaining index corresponds to the destination vertex in the path
+                    # whose source is the destination vertex in the max path
+                    elif friend_pair_index[friend_pair_index[max_path_index][1]][1] == index:
+                        distance_to_center[index] = len(path[friend_pair_index[max_path_index][1]]) -\
+                                                    distance[friend_pair_index[max_path_index][1]][center.vertex - 1] - 1
+            return center.vertex, distance_to_center
+
+    def run(self):  # O(q * logV) ~ O(q logV)
         for day in range(self.q):  # O(q)
             yield self.solve(day)

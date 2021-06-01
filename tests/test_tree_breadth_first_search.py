@@ -1,12 +1,12 @@
 import unittest
 from tests import read_input
-from solutions.tree_breadth_first_search_solution import TreeBFSSolution as TreeBreadthFirstSearch
+from solutions.tree_breadth_first_search_solution import TreeBreadthFirstSearchSolution as TreeBreadthFirstSearch
 from utils.debug_utils import debug_test_start, debug_test_end, debug_test_output
 
 problem_name = "TreeBreadthFirstSearch"
 
 
-class TreeTreeBreadthFirstSearchTests(unittest.TestCase):
+class TreeBreadthFirstSearchTests(unittest.TestCase):
 
     def test_tree_bfs_example1(self):
         debug_test_start(problem_name, 1)

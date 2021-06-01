@@ -1,6 +1,6 @@
 import unittest
 from tests import read_input
-from solutions.breadth_first_search_solution import BFSSolution as BreadthFirstSearch
+from solutions.breadth_first_search_solution import BreadthFirstSearchSolution as BreadthFirstSearch
 from utils.debug_utils import debug_test_start, debug_test_end, debug_test_output
 
 problem_name = "BreadthFirstSearch"
