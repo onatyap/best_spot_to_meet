@@ -189,7 +189,7 @@ class BreadthFirstSearchTests(unittest.TestCase):
             self.assertEqual(distances[2], d2, msg='Wrong dist3')
         debug_test_end()
 
-    def test_bfs_example010(self):
+    def test_bfs_example10(self):
         debug_test_start(problem_name, 10)
         test_true = ['14 4 1 3',
                      '1 5 4 4',
