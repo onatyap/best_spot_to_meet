@@ -12,6 +12,7 @@ from utils.problem_constraint_utils import solution_list
 
 
 def main(argv):
+
     n, q, node_connection_list, friend_locations = read_input(argv[0])
     print(n, q, node_connection_list, friend_locations)
     if len(argv) == 1:  # if solution type was not specified, solve with optimal
@@ -30,6 +31,9 @@ def main(argv):
     start = time.time()  # start
     total = 0
     for vertex, distances in optimal_solution.run():
+        #stop
+        end = time.time()
+        total += (end - start)
         print(vertex, distances[0], distances[1], distances[2])
         #start
         start = time.time()
