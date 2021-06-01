@@ -15,8 +15,9 @@ need to travel.
 
 ## Floyd Warshall Algorithm
 
-Our first approach to this problem was to calculate the shortest paths for all pairs in the graph. The naive algorithm to achieve this is
-to use a dynamic programming algorithm called Floyd Warshall. There are O(V^3) sub-problems and each take constant time. It runs in O(V^3).
+Our first approach to this problem was to calculate the shortest paths for all pairs in the graph. The naive algorithm
+to achieve this is to use a dynamic programming algorithm called Floyd Warshall. There are O(V^3) sub-problems and each
+take constant time. It runs in O(V^3).
 
 ## Johnson's Algorithm
 

@@ -87,6 +87,7 @@ def main(argv):
                 start = time.time()
             print(f'Total run took {total * 1e3} ms')
 
+
 if __name__ == "__main__":
     if len(sys.argv) == 1:  # no arguments supplied
         print('Test Mode')
