@@ -63,9 +63,11 @@ def main(argv):
                 solution_total += total
             print(f'{argv[1]} took {solution_total * 1e3} ms')
         elif "test" in argv[0] and len(argv) < 2:  # test provided but no solution specified
+            answer_list = []
+            n, q, node_connection_list, friend_locations = read_input(argv[0])
             for solution in solution_list:
                 try:
-                    n, q, node_connection_list, friend_locations = read_input(argv[0])
+                    answer = []
                     optimal_solution = eval(solution + '(n, q, node_connection_list, friend_locations)')
 
                     print("Program started with", solution, "for", argv[0])
@@ -77,13 +79,23 @@ def main(argv):
                         total += (end - start)
                         # print(vertex, distances[0], distances[1], distances[2])
                         # start
+                        answer += [[vertex,  distances[0], distances[1], distances[2]]]
                         start = time.time()
                     print(f'{solution} for {argv[0]} took {total * 1e3} ms')
+                    answer_list.append(answer)
                     grand_total += total
                 except:
                     print("Error in", solution, "skipping...")
             print(f'Grand Total run took {grand_total * 1e3} ms')
-        else: # 110925.79817771912 ms
+            error_found = False
+            for i in range(q):
+                if not (answer_list[0][i] == answer_list[1][i] == answer_list[2][i] == answer_list[3][i] == answer_list[4][i] == answer_list[5][i]):
+                    error_found = True
+                    print("Error", answer_list[0][i], "\n", answer_list[1][i], "\n", answer_list[2][i], "\n", answer_list[3][i], "\n", answer_list[4][i], "\n", answer_list[5][i])
+            if not error_found:
+                print("No errors were found")
+
+        else:
             n, q, node_connection_list, friend_locations = read_input(argv[0])
             # print(n, q, node_connection_list, friend_locations)
             if len(argv) == 1:  # if solution type was not specified, solve with optimal
