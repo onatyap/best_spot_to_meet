@@ -10,11 +10,14 @@ from solutions.breadth_first_search_solution import BreadthFirstSearchSolution a
 from solutions.multi_breadth_first_search_solution import MultiBreadthFirstSearchSolution as MultiBreadthFirstSearch
 from solutions.tree_breadth_first_search_solution import TreeBreadthFirstSearchSolution as TreeBreadthFirstSearch
 from utils.problem_constraint_utils import solution_list
+from utils.graph_generator_util import generate_graph
 
 
 def main(argv):
     #for a,b,c in itertools.product(range(1,51), repeat=3):
     #    print(a,b,c)
+    #return
+    #generate_graph(f"test{time.time()}.txt", 1000, 0, 3, 5)
     #return
     grand_total = 0
     if argv is None:
@@ -59,7 +62,28 @@ def main(argv):
                 print(f'{argv[1]} for examples/example{i}.txt took {total * 1e3} ms')
                 solution_total += total
             print(f'{argv[1]} took {solution_total * 1e3} ms')
-        else:
+        elif "test" in argv[0] and len(argv) < 2:  # test provided but no solution specified
+            for solution in solution_list:
+                try:
+                    n, q, node_connection_list, friend_locations = read_input(argv[0])
+                    optimal_solution = eval(solution + '(n, q, node_connection_list, friend_locations)')
+
+                    print("Program started with", solution, "for", argv[0])
+                    start = time.time()  # start
+                    total = 0
+                    for vertex, distances in optimal_solution.run():
+                        # stop
+                        end = time.time()
+                        total += (end - start)
+                        # print(vertex, distances[0], distances[1], distances[2])
+                        # start
+                        start = time.time()
+                    print(f'{solution} for {argv[0]} took {total * 1e3} ms')
+                    grand_total += total
+                except:
+                    print("Error in", solution, "skipping...")
+            print(f'Grand Total run took {grand_total * 1e3} ms')
+        else: # 110925.79817771912 ms
             n, q, node_connection_list, friend_locations = read_input(argv[0])
             # print(n, q, node_connection_list, friend_locations)
             if len(argv) == 1:  # if solution type was not specified, solve with optimal
