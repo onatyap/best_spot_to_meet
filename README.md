@@ -40,7 +40,7 @@ keep track of the distances. This improvement in the algorithm takes O(q*n) time
 
 ## Multi Breadth First Search Algorithm
 
-Our next approach is running Breath First Search at the same time only from the nodes that each friend is located. 
+Our next approach is running Breadth First Search at the same time only from the nodes that each friend is located. 
 At each iteration, we pop the next element from the queue for each friend and add that element to the array that we 
 keep all visited nodes. The first node that is visited by all friends is our optimal node. If there are more than one
 node that is visited by all friends at the same time, we decide the optimal node based on comparisons. The total time 
