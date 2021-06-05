@@ -49,16 +49,36 @@ nodes are generally lower than previous case since we return as soon as we find 
 
 ## Tree Breadth First Search Algorithm
 
-Finally, in order to obtain O(log(n)) search times between each friend nodes, we concerted the given graph to a tree
-structure. The algorithm assumes final tree height of log(n), which allows the paths between each combination of friends
-in O(log(n)) time. After each path is discovered, the center node in the longest path is selected, and then the optimal
-center location is selected based on the other paths' placements. Since the tree structure takes O(n) time to build, and
-the rest runs in O(log(n)) time for each day, the total time complexity of this algorithm is O(n + q*log(n)).
+Finally, in order to obtain O(log(n)) search times between each friend nodes, we converted the given graph into a tree
+structure. Before constructing the tree, first we need to find its root. This can be accomplished by finding the
+center of the two most distant nodes in the graph. After having found the root, we construct the tree as follows: 
+For each node, we add all the corresponding nodes from the adjacency list to its children list while we set their parent to this
+particular node unless the corresponding node is the root itself. All nodes in the graph are kept in a container list
+where any node can be accessed by its vertex index, so we do not need to go down the tree each time, hence the construction
+takes O(n). The key aspect of our approach is augmenting this tree such that each node contains a field called **_subtree_** 
+**_index_** which allows us to easily locate a node from its grandparents. Specifically, instead of running BFS to find
+the path between two vertices, The algorithm assumes final tree height of log(n),
+which allows the paths between each combination of friends in O(log(n)) time. After each path is discovered, the middle
+node in the longest path is chosen as center, and then the optimal center location is selected based on the other paths'
+placements. Since the tree structure takes O(n) time to build, and the rest runs in O(log(n)) time for each day,
+the total time complexity of this algorithm is O(n + q*log(n)).
+
+## Correctness of the Tree Breadth First Search Algorithm
+
+yeni eklenen node'dan sonra olculen longest path distance degisiyorsa
 
 ## How to run?
-You can run our most optimal solution using:
-To solve an example case with a specific algorithm
-```python3 src/main.py [ExampleFilePath] [AlgorithmName]```
+You can run our optimal solution using:
+```python main.py [ExampleFilePath]```
+
+To solve a specific example case with a specific algorithm (stores the result in its corresponding file in outputs)
+```python main.py [ExampleFilePath] [AlgorithmName]```
 
 To solve all example cases with a specific algorithm
-```python3 src/main.py all-examples [AlgorithmName]```
+```python main.py all-examples [AlgorithmName]```
+
+To compare all solution cases with a specific input file
+```python main.py all-solutions [ExampleFilePath]```
+
+To run all example cases using all algorithms
+```python main.py```

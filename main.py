@@ -21,7 +21,7 @@ def main(argv):
     if argv is None:
         for solution in solution_list:
             solution_total = 0
-            for i in range(1, 11):
+            for i in range(1, 12 + 1):
                 n, q, node_connection_list, friend_locations = read_input(f"examples/example{i}.txt")
                 optimal_solution = eval(solution + '(n, q, node_connection_list, friend_locations)')
 
@@ -43,7 +43,7 @@ def main(argv):
     else:
         if argv[0] == "all-examples":
             solution_total = 0
-            for i in range(1, 11):
+            for i in range(1, 12 + 1):
                 n, q, node_connection_list, friend_locations = read_input(f"examples/example{i}.txt")
                 optimal_solution = eval(argv[1] + '(n, q, node_connection_list, friend_locations)')
 
@@ -60,15 +60,15 @@ def main(argv):
                 print(f'{argv[1]} for examples/example{i}.txt took {total * 1e3} ms')
                 solution_total += total
             print(f'{argv[1]} took {solution_total * 1e3} ms')
-        elif "test" in argv[0] and len(argv) < 2:  # test provided but no solution specified
+        elif argv[0] == "all-solutions" and len(argv) > 1:  # test a specific case for all solution types
             answer_list = []
-            n, q, node_connection_list, friend_locations = read_input(argv[0])
+            n, q, node_connection_list, friend_locations = read_input(argv[1])
             for solution in solution_list:
                 try:
                     answer = []
                     optimal_solution = eval(solution + '(n, q, node_connection_list, friend_locations)')
 
-                    print("Program started with", solution, "for", argv[0])
+                    print("Program started with", solution, "for", argv[1])
                     start = time.time()  # start
                     total = 0
                     for vertex, distances in optimal_solution.run():
@@ -79,7 +79,7 @@ def main(argv):
                         # start
                         answer += [[vertex,  distances[0], distances[1], distances[2]]]
                         start = time.time()
-                    print(f'{solution} for {argv[0]} took {total * 1e3} ms')
+                    print(f'{solution} for {argv[1]} took {total * 1e3} ms')
                     answer_list.append(answer)
                     grand_total += total
                 except:
@@ -98,28 +98,19 @@ def main(argv):
             # print(n, q, node_connection_list, friend_locations)
             if len(argv) == 1:  # if solution type was not specified, solve with optimal
                 optimal_solution = TreeBreadthFirstSearch(n, q, node_connection_list, friend_locations)
+                optimal_solution_name = "TreeBreadthFirstSearch"
             elif len(argv) == 2:  # if solution was specified, solve with that
                 solution_input = argv[1]
                 if solution_input in solution_list:
                     optimal_solution = eval(solution_input + '(n, q, node_connection_list, friend_locations)')
+                    optimal_solution_name = solution_input
                 else:
                     print("Please specify a correct algorithm")
                     sys.exit(1)
             else:
                 print("Too many parameters, please only specify an input file and a correct algorithm!")
                 sys.exit(1)
-
-            print("Program started with", argv[1], "for", argv[0])
-            start = time.time()  # start
-            total = 0
-            for vertex, distances in optimal_solution.run():
-                # stop
-                end = time.time()
-                total += (end - start)
-                # print(vertex, distances[0], distances[1], distances[2])
-                # start
-                start = time.time()
-            print(f'Total run took {total * 1e3} ms')
+            run(argv[0], optimal_solution_name, optimal_solution)
 
 
 if __name__ == "__main__":
