@@ -65,7 +65,60 @@ the total time complexity of this algorithm is O(n + q*log(n)).
 
 ## Correctness of the Tree Breadth First Search Algorithm
 
-yeni eklenen node'dan sonra olculen longest path distance degisiyorsa
+### Lemma 1:
+
+The center of a tree is the middle node of the two most distant nodes (the longest path) where the center (or root) means minimizing the maximum distance to all other nodes.
+
+### Proof to Lemma 1:
+
+We will prove the lemma by induction.
+
+In the base case, let’s cover the trivial graphs where the number of nodes are ≤3. For V = 1, the center is trivial, it is the only node in the graph. For V = 2, the center is either one of the nodes. 
+
+For V = 3, the center is the middle node of the two most distant nodes. In the tree below, we can see that choosing node C minimizes the maximum distance to all other nodes, i.e. A and B.
+In the induction case, let’s assume that we have a tree whose longest path is from node A to node B (call it dAB) and node C is located in the middle of this path. Our claim is that the center node picked from the middle of the longest path in the tree minimizes the distances to all other nodes. If this claim holds when another node is added to the tree, we can conclude our proof.
+
+We have 3 cases to observe in this step:
+
+#### Case 1 (dAR ≥ dBR > dCR):
+If dAR ≥ dBR > dCR, then C does not affect the longest path, as dAB > dCX for any node X in the tree. This holds because if there was a node such that dCX > dAB, then this path must go through the center which implies dCX = dCR + dRX. Knowing that dAR ≥ dBR > dCR; we can see that the distance turns out to be  dRX > dAR + dBR - dCR > dAR = dBR which is strictly larger than dAR and that contradicts with the initial assumption.
+
+Thus, the center is preserved between the longest path in the tree.
+
+#### Case 2 (dAR ≥ dBR = dCR):
+If dAR ≥ dBR = dCR, we do not have to even consider C as not only does it leave the longest path unaffected but also it does not violate the given distance constraints.
+
+#### Case 3 (dCR > dAR > dBR):
+If dCR > dAR > dBR, the longest path changes to dCA if their first common ancestor is the root. The center is now located in the middle of this path, named R’ and satisfies one of the following conditions:
+dCR’ = dAR’ ≥ dBR’ >...
+dCR’ > dAR’ ≥ dBR’ >...
+dAR’ > dCR’ ≥ dBR’ >...
+
+By the definition of the center of the longest path of our algorithm, the new center R’ satisfies the minimization of distances to all other nodes as dCR is the new farthest node from the root and the provided constraints complete the proof.
+
+
+
+#### Tree Breadth First Search: 
+
+
+We will now discuss how the algorithm works. 
+
+The preprocessing step involves constructing an augmented tree whose nodes have a field called subtree index which allows us to traverse faster in the graph.
+
+In this step, we first generate an adjacency list from the input node list. For each node in this node list, we map the vertex to its neighbors in a Python dictionary. In order to construct the tree, we need to figure out the root of it. By Lemma 1, we can do that by finding the two most distant nodes in the tree. This is done by running two Breadth First Search in the graph, where the first BFS finds the most distant node to a randomly selected node and second finds the most distant to that one. Their center gives us the root, which is the foundation of our tree construction.
+
+Starting from the root, we construct the tree by connecting the corresponding children and parent for each node. The key aspect of our algorithm is what we call the subtree index. This allows us to travel fast between the nodes in the tree, that is the worst case traverse takes O(height(tree)). For a node, the subtree index is constructed such that  ith index of this field corresponds to the grandparent’s child index where the grandparent’s height is i (starting from the root). A subtree index example is shown below. This whole process takes O(n) as we hold a node container list that we can access its ith element by indexing in constant time and connecting nodes and subtree index takes O(1) as well.
+After having constructed the tree, we are now ready to find the center of our three friends.
+
+By Lemma 1, we know that the center of 3 friends in the tree is the middle node of the most distant two friends. There can be edge cases where the length of the distance between these two friends are even such that the center can be closer to one of these friends, and we can decide which center to choose by minimizing the distance between each of the possible centers with the other friend.
+
+Finding the most distant two friends requires us to run three guided traversals in the tree, that is from friend a to b, b to c, and c to a. In each traversal, we take advantage of the subtree index as follows. Let’s say from a source node say friend c (16 in the example below), we want to traverse all the way to the destination node friend a. First, we compare their subtree index to find their common ancestor (or predecessor) with maximum height and traverse there (1 in the example below), which takes O(height(tree)) worst case. Then, from this node, we go to the destination node (12 in the example below) which again takes O(height(tree)).
+
+
+
+#### Future Works on the Algorithm:
+
+As discussed previously, Lemma 1 allows us to choose the center node in the longest path that is among given friends in the tree. The determination of the longest path or its center does not depend on the number of friends that are located in the tree, hence the algorithm can be extended to support more friends.  
 
 ## How to run?
 You can run our optimal solution using:
