@@ -63,6 +63,26 @@ node in the longest path is chosen as center, and then the optimal center locati
 placements. Since the tree structure takes O(n) time to build, and the rest runs in O(log(n)) time for each day,
 the total time complexity of this algorithm is O(n + q*log(n)).
 
+#### Future Works on the Algorithm:
+
+As discussed previously, Lemma 1 allows us to choose the center node in the longest path that is among given friends in the tree. The determination of the longest path or its center does not depend on the number of friends that are located in the tree, hence the algorithm can be extended to support more friends.  
+
+## How to run?
+You can run our optimal solution using:
+```python main.py [ExampleFilePath]```
+
+To solve a specific example case with a specific algorithm (stores the result in its corresponding file in outputs)
+```python main.py [ExampleFilePath] [AlgorithmName]```
+
+To solve all example cases with a specific algorithm
+```python main.py all-examples [AlgorithmName]```
+
+To compare all solution cases with a specific input file
+```python main.py all-solutions [ExampleFilePath]```
+
+To run all example cases using all algorithms
+```python main.py```
+
 ## Correctness of the Tree Breadth First Search Algorithm
 
 ### Lemma 1:
@@ -115,23 +135,3 @@ By Lemma 1, we know that the center of 3 friends in the tree is the middle node 
 Finding the most distant two friends requires us to run three guided traversals in the tree, that is from friend a to b, b to c, and c to a. In each traversal, we take advantage of the subtree index as follows. Let’s say from a source node say friend c (16 in the example below), we want to traverse all the way to the destination node friend a. First, we compare their subtree index to find their common ancestor (or predecessor) with maximum height and traverse there (1 in the example below), which takes O(height(tree)) worst case. Then, from this node, we go to the destination node (12 in the example below) which again takes O(height(tree)).
 
 
-
-#### Future Works on the Algorithm:
-
-As discussed previously, Lemma 1 allows us to choose the center node in the longest path that is among given friends in the tree. The determination of the longest path or its center does not depend on the number of friends that are located in the tree, hence the algorithm can be extended to support more friends.  
-
-## How to run?
-You can run our optimal solution using:
-```python main.py [ExampleFilePath]```
-
-To solve a specific example case with a specific algorithm (stores the result in its corresponding file in outputs)
-```python main.py [ExampleFilePath] [AlgorithmName]```
-
-To solve all example cases with a specific algorithm
-```python main.py all-examples [AlgorithmName]```
-
-To compare all solution cases with a specific input file
-```python main.py all-solutions [ExampleFilePath]```
-
-To run all example cases using all algorithms
-```python main.py```
