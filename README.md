@@ -1,6 +1,5 @@
 # Best Spot to Meet
 
-Best Spot to Meet
 Yusuf, Ali and Berat are best friends, and they live in the beautiful city of Mersin, Turkey. They have decided to meet 
 each other after the work, however, because of their jobs, they might end up their day in different parts of the city, 
 and it is not efficient to choose the location of the meeting beforehand. They all are agreed on that the location of 
