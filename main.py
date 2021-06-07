@@ -15,16 +15,17 @@ from utils.graph_generator_util import generate_graph
 from utils.data_types_utils import Solution
 
 
-def run(input_file_name, solution_name, solution: Solution, verbose: bool = False):
+def run(input_file_name, solution_name, solution: Solution, log_directory: str='', verbose: bool = False):
     print("Program started with", solution_name, "for", input_file_name)
-    dir_name = datetime.datetime.now().strftime('%H:%M:%S')
-    try:
+    dir_name = datetime.datetime.now().strftime('%H:%M')
+    example_number = input_file_name.split('/')[1].split('.')[0]
+
+    if 'outputs' not in os.listdir():
+        os.mkdir(f"outputs")
+    if f"{dir_name}" not in os.listdir('outputs/'):
         os.mkdir(f"outputs/{dir_name}")
-        output_file = open(f"outputs/{dir_name}/{input_file_name.split('/')[1].split('.')[0]}_{solution_name}.txt", 'w')
-    except OSError:
-        print("Could not open file:",
-              f"outputs/{dir_name}/{input_file_name.split('/')[1].split('.')[0]}_{solution_name}.txt")
-        sys.exit()
+    output_file = open(f"outputs/{dir_name}/{example_number}_{solution_name}.txt", 'w')
+
     total = 0
     start = time.time()
     for vertex, distances in solution.run():
