@@ -70,20 +70,25 @@ As discussed previously, Lemma 1 allows us to choose the center node in the long
 ## How to run?
 You can run our optimal solution using:
 ```python main.py [ExampleFilePath]```
-```python main.py examples/example1.txt```
+
+* Ex: ```python main.py examples/example1.txt```
 
 To solve a specific example case with a specific algorithm (stores the result in its corresponding file in outputs)
 ```python main.py [ExampleFilePath] [AlgorithmName]```
-```python main.py examples/example1.txt MultiBreadthFirstSearch```
-AlgorithmName options: ```FloydWarshall, Johnsons, Dijkstra, BreadthFirstSearch, MultiBreadthFirstSearch, TreeBreadthFirstSearch```
+
+* Ex: ```python main.py examples/example1.txt MultiBreadthFirstSearch```
+
+* AlgorithmName options: ```FloydWarshall, Johnsons, Dijkstra, BreadthFirstSearch, MultiBreadthFirstSearch, TreeBreadthFirstSearch```
 
 To solve all example cases with a specific algorithm
 ```python main.py all-examples [AlgorithmName]```
-```python main.py all-examples TreeBreadthFirstSearch```
+
+* Ex: ```python main.py all-examples TreeBreadthFirstSearch```
 
 To compare all solution cases with a specific input file
 ```python main.py all-solutions [ExampleFilePath]```
-```python main.py all-solutions examples/example1.txt```
+
+* Ex: ```python main.py all-solutions examples/example1.txt```
 
 To run all example cases using all algorithms
 ```python main.py```
